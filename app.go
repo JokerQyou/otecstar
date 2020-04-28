@@ -36,7 +36,6 @@ type OTECStarApp struct {
 	upSNR     *systray.MenuItem
 	downWidth *systray.MenuItem
 	downSNR   *systray.MenuItem
-	updateCh  chan *State
 	stopCh    chan int
 	auth      AuthContainer
 	icon      string
@@ -275,7 +274,6 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 		upSNR:     systray.AddMenuItem("↑ 上行信噪比: -", ""),
 		downWidth: systray.AddMenuItem("↓ 下行速率: -", ""),
 		downSNR:   systray.AddMenuItem("↓ 下行信噪比: -", ""),
-		updateCh:  make(chan *State),
 		stopCh:    make(chan int),
 		auth: AuthContainer{
 			routerIP:      config.RouterIP,
@@ -303,11 +301,10 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 	app.Clicked(systray.AddMenuItem("Quit", ""), func() {
 		ticker.Stop()
 		close(app.stopCh)
-		close(app.updateCh)
 		systray.Quit()
 	})
 
-	// This goroutine triggers state capturing at an interval, the captured state is then sent through `updateCh`
+	// This goroutine triggers state capturing at an interval, the captured state is then rendered in place
 	go func() {
 		for {
 			select {
@@ -317,25 +314,7 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 				if !ok { // Closed?
 					return
 				}
-				app.updateCh <- app.getState()
-			}
-		}
-	}()
-
-	// This goroutine takes captured state from `updateCh`, and renders it to menu items
-	go func() {
-		for {
-			select {
-			case <-app.stopCh:
-				// Drain update channel upon exit
-				for range app.updateCh {
-				}
-				return
-			case state, ok := <-app.updateCh:
-				if !ok { // Closed?
-					return
-				}
-				app.renderState(state)
+				app.renderState(app.getState())
 			}
 		}
 	}()
