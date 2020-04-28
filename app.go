@@ -233,8 +233,9 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 	}
 	ticker := time.NewTicker(config.Interval)
 	app.Clicked(systray.AddMenuItem("Quit", "Quit"), func() {
-		defer ticker.Stop()
+		ticker.Stop()
 		close(app.stopCh)
+		close(app.updateCh)
 		systray.Quit()
 	})
 
@@ -244,7 +245,10 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 			select {
 			case <-app.stopCh:
 				return
-			case <-ticker.C:
+			case _, ok := <-ticker.C:
+				if !ok { // Closed?
+					return
+				}
 				app.updateCh <- app.getState()
 			}
 		}
@@ -259,7 +263,10 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 				for range app.updateCh {
 				}
 				return
-			case state := <-app.updateCh:
+			case state, ok := <-app.updateCh:
+				if !ok { // Closed?
+					return
+				}
 				app.wlanState.SetTitle("宽带: " + state.wlanState)
 				if state.wlanState == `连接上` {
 					app.wlanState.Check()
