@@ -204,7 +204,7 @@ func getText(node *html.Node) (t string) {
 func NewOTECStarApp(config *AuthConfig) *OTECStarApp {
 	app := OTECStarApp{
 		wlanState: systray.AddMenuItem("宽带: -", ""),
-		linkState: systray.AddMenuItem("链路连接状态: -", ""),
+		linkState: systray.AddMenuItem("链路: -", ""),
 		linkLoss:  systray.AddMenuItem("链路衰减: -", ""),
 		upWidth:   systray.AddMenuItem("上行速率: -", ""),
 		upSNR:     systray.AddMenuItem("上行信噪比: -", ""),
@@ -260,17 +260,17 @@ func NewOTECStarApp(config *AuthConfig) *OTECStarApp {
 					app.wlanState.Uncheck()
 				}
 
-				app.linkState.SetTitle("链路连接状态: " + state.linkState)
+				app.linkState.SetTitle("链路: " + state.linkState)
 				if state.linkState == `连接上` {
 					app.linkState.Check()
 				} else {
 					app.linkState.Uncheck()
 				}
-				app.linkLoss.SetTitle("链路衰减: " + state.linkLoss + "dB")
-				app.upWidth.SetTitle("上行速率: " + state.upWidth + "Mbps")
-				app.upSNR.SetTitle("上行信噪比: " + state.upSNR + "dB")
-				app.downWidth.SetTitle("下行速率: " + state.downWidth + "Mbps")
-				app.downSNR.SetTitle("下行信噪比: " + state.downSNR + "dB")
+				app.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
+				app.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
+				app.upSNR.SetTitle("上行信噪比: " + state.upSNR + " dB")
+				app.downWidth.SetTitle("下行速率: " + state.downWidth + " Mbps")
+				app.downSNR.SetTitle("下行信噪比: " + state.downSNR + " dB")
 			}
 		}
 	}()
