@@ -14,6 +14,8 @@ import (
 	"time"
 )
 
+const VERSION = "v0.2.0"
+
 // State represents a captured state (snapshot) from the router
 type State struct {
 	wlanState string

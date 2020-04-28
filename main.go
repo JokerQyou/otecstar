@@ -8,8 +8,6 @@ import (
 	"time"
 )
 
-const VERSION = "v0.1.0"
-
 var logger zerolog.Logger
 
 func init() {
