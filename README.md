@@ -41,3 +41,8 @@ And edit `config.ini`, replace router IP, username and password.
 # License
 
 GPL-3.0.
+
+# Credits
+
+- Thanks [RemixIcon](https://github.com/Remix-Design/remixicon/) for their awesome icons;
+- These icons are converted to Go source code via the [2goarray](https://github.com/cratonica/2goarray) tool;
