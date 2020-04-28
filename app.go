@@ -37,6 +37,7 @@ type OTECStarApp struct {
 	updateCh  chan *State
 	stopCh    chan int
 	auth      AuthContainer
+	icon      string
 }
 
 // AuthContainer embeds all data specific to router authentication
@@ -194,37 +195,60 @@ func (o *OTECStarApp) getState() *State {
 }
 
 func (o *OTECStarApp) renderState(state *State) {
+	icon := "ok"
+
 	o.wlanState.SetTitle("宽带: " + state.wlanState)
 	if state.wlanState == `连接上` {
 		if !o.wlanState.Checked() {
 			o.wlanState.Check()
-			systray.SetIcon(icons.OK)
 		}
 	} else {
 		if o.wlanState.Checked() {
 			o.wlanState.Uncheck()
-			systray.SetIcon(icons.ERROR)
 		}
+		icon = "error"
 	}
 
 	o.linkState.SetTitle("链路: " + state.linkState)
 	if state.linkState == `连接上` {
 		if !o.linkState.Checked() {
 			o.linkState.Check()
-			systray.SetIcon(icons.OK)
 		}
 	} else {
 		if o.linkState.Checked() {
 			o.linkState.Uncheck()
-			systray.SetIcon(icons.ERROR)
 		}
+		icon = "error"
 	}
+
 	o.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
 	o.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
 	o.upSNR.SetTitle("上行信噪比: " + state.upSNR + " dB")
 	o.downWidth.SetTitle("下行速率: " + state.downWidth + " Mbps")
 	o.downSNR.SetTitle("下行信噪比: " + state.downSNR + " dB")
 
+	if icon != "error" && (state.linkLoss == "0" || state.upSNR == "0" || state.downSNR == "0") {
+		icon = "warn"
+	}
+
+	o.setIcon(icon)
+}
+
+func (o *OTECStarApp) setIcon(icon string) {
+	if icon == o.icon {
+		return
+	}
+
+	if icon == "ok" {
+		systray.SetIcon(icons.OK)
+	} else if icon == "warn" {
+		systray.SetIcon(icons.WARN)
+	} else if icon == "error" {
+		systray.SetIcon(icons.ERROR)
+	} else {
+		return
+	}
+	o.icon = icon
 }
 
 func getText(node *html.Node) (t string) {
@@ -241,9 +265,6 @@ func getText(node *html.Node) (t string) {
 
 // NewOTECStarApp constructs a new OTECStarApp instance that is ready to run
 func NewOTECStarApp(config *Config) *OTECStarApp {
-	systray.SetIcon(icons.OK)
-	systray.SetTooltip("OTECStar network status")
-
 	app := OTECStarApp{
 		wlanState: systray.AddMenuItem("宽带: -", ""),
 		linkState: systray.AddMenuItem("链路: -", ""),
@@ -263,6 +284,9 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 			password:      config.Password,
 		},
 	}
+	app.setIcon("ok")
+	systray.SetTooltip("OTECStar network status")
+
 	systray.AddSeparator()
 	systray.AddMenuItem(VERSION, "").Disable()
 	systray.AddSeparator()
