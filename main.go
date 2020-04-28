@@ -22,7 +22,6 @@ func main() {
 }
 
 func onReady() {
-	logger.Debug().Msg("Start")
 	config, err := LoadConfig()
 	if err != nil {
 		logger.Fatal().Err(err).Msg("Failed to load config file")

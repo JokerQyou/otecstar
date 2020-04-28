@@ -197,7 +197,7 @@ func (o *OTECStarApp) renderState(state *State) {
 	o.wlanState.SetTitle("宽带: " + state.wlanState)
 	if state.wlanState == `连接上` {
 		if !o.wlanState.Checked() {
-			o.wlanState.Checked()
+			o.wlanState.Check()
 			systray.SetIcon(icons.OK)
 		}
 	} else {
