@@ -33,7 +33,6 @@ type OTECStarApp struct {
 	upSNR     *systray.MenuItem
 	downWidth *systray.MenuItem
 	downSNR   *systray.MenuItem
-	quit      *systray.MenuItem
 	updateCh  chan *State
 	stopCh    chan int
 	auth      AuthContainer
