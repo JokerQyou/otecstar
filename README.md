@@ -14,6 +14,12 @@ Some ISPs install OTECStar devices for users to access their internet service. H
 go build
 ```
 
+On Windows, you'll need to add some flags:
+
+```shell script
+go build -ldflags "-H=windowsgui"
+```
+
 ## To config
 
 ```shell script
