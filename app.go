@@ -224,10 +224,10 @@ func (o *OTECStarApp) renderState(state *State) {
 	}
 
 	o.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
-	o.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
-	o.upSNR.SetTitle("上行信噪比: " + state.upSNR + " dB")
-	o.downWidth.SetTitle("下行速率: " + state.downWidth + " Mbps")
-	o.downSNR.SetTitle("下行信噪比: " + state.downSNR + " dB")
+	o.upWidth.SetTitle("↑ 上行速率: " + state.upWidth + " Mbps")
+	o.upSNR.SetTitle("↑ 上行信噪比: " + state.upSNR + " dB")
+	o.downWidth.SetTitle("↓ 下行速率: " + state.downWidth + " Mbps")
+	o.downSNR.SetTitle("↓ 下行信噪比: " + state.downSNR + " dB")
 
 	if icon != "error" && (state.linkLoss == "0" || state.upSNR == "0" || state.downSNR == "0") {
 		icon = "warn"
@@ -271,10 +271,10 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 		wlanState: systray.AddMenuItem("宽带: -", ""),
 		linkState: systray.AddMenuItem("链路: -", ""),
 		linkLoss:  systray.AddMenuItem("链路衰减: -", ""),
-		upWidth:   systray.AddMenuItem("上行速率: -", ""),
-		upSNR:     systray.AddMenuItem("上行信噪比: -", ""),
-		downWidth: systray.AddMenuItem("下行速率: -", ""),
-		downSNR:   systray.AddMenuItem("下行信噪比: -", ""),
+		upWidth:   systray.AddMenuItem("↑ 上行速率: -", ""),
+		upSNR:     systray.AddMenuItem("↑ 上行信噪比: -", ""),
+		downWidth: systray.AddMenuItem("↓ 下行速率: -", ""),
+		downSNR:   systray.AddMenuItem("↓ 下行信噪比: -", ""),
 		updateCh:  make(chan *State),
 		stopCh:    make(chan int),
 		auth: AuthContainer{
