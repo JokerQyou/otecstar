@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-const VERSION = "v0.2.0"
+const VERSION = "v0.2.1"
 
 // State represents a captured state (snapshot) from the router
 type State struct {
