@@ -39,7 +39,7 @@ func onReady() {
 	systray.SetIcon(icons.OK)
 	systray.SetTooltip("OTECStar network status")
 
-	_ = NewOTECStarApp(config.AuthConfig)
+	_ = NewOTECStarApp(&config)
 	logger.Debug().Msg("Ready")
 }
 

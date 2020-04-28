@@ -201,7 +201,7 @@ func getText(node *html.Node) (t string) {
 }
 
 // NewOTECStarApp constructs a new OTECStarApp instance that is ready to run
-func NewOTECStarApp(config *AuthConfig) *OTECStarApp {
+func NewOTECStarApp(config *Config) *OTECStarApp {
 	app := OTECStarApp{
 		wlanState: systray.AddMenuItem("宽带: -", ""),
 		linkState: systray.AddMenuItem("链路: -", ""),
@@ -225,7 +225,13 @@ func NewOTECStarApp(config *AuthConfig) *OTECStarApp {
 	systray.AddMenuItem(VERSION, "").Disable()
 	systray.AddSeparator()
 
-	ticker := time.NewTicker(time.Second)
+	if config.Interval < time.Second {
+		logger.Warn().Dur("interval", config.Interval).
+			Dur("actualInterval", time.Second).
+			Msg("Interval should be at least 1 second")
+		config.Interval = time.Second
+	}
+	ticker := time.NewTicker(config.Interval)
 	app.Clicked(systray.AddMenuItem("Quit", "Quit"), func() {
 		defer ticker.Stop()
 		close(app.stopCh)

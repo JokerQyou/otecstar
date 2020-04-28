@@ -6,10 +6,12 @@ This module contains configuration related types and logic.
 import (
 	"fmt"
 	"gopkg.in/ini.v1"
+	"time"
 )
 
 type Config struct {
-	LogLevel    string `ini:"log_level"`
+	LogLevel    string        `ini:"log_level"`
+	Interval    time.Duration `ini:"interval"`
 	*AuthConfig `ini:"auth"`
 }
 type AuthConfig struct {
