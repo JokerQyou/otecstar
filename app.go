@@ -130,15 +130,15 @@ func (o *OTECStarApp) getState() *State {
 		downSNR:   "-",
 	}
 
-	logger.Debug().Interface("sysauthCookie", o.auth.sysauthCookie).Msg("getState")
+	logger.Debug().Msg("getState")
 	// Login for the first time
 	if o.auth.sysauthCookie == nil {
 		if err := o.login(); err != nil {
+			logger.Error().Err(err).Msg("Failed to login")
 			state.wlanState = "ERROR: " + err.Error()
 			return &state
 		}
 	}
-	logger.Debug().Interface("sysauthCookie", o.auth.sysauthCookie).Msg("getState2")
 
 	// Get state
 	jar, _ := cookiejar.New(nil)
@@ -152,24 +152,28 @@ func (o *OTECStarApp) getState() *State {
 
 	resp, err := client.Get(stateUrl)
 	if err != nil {
+		logger.Error().Err(err).Msg("Failed to access WAN state page")
 		state.wlanState = "ERROR: " + err.Error()
 		return &state
 	}
 
 	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
+		logger.Error().Err(err).Msg("Failed to parse WAN page response")
 		state.wlanState = "ERROR: " + err.Error()
 		return &state
 	}
 
 	// Check state response, if our authentication expired, do another login
 	if doc.Find(`form#sysauth`).Length() > 0 {
+		logger.Info().Msg("Login expired, retrying")
 		o.auth.sysauthCookie = nil
 		return o.getState()
 	}
 
 	dataTables := doc.Find(`table.cbi-table-list`)
 	if dataTables.Length() != 4 {
+		logger.Error().Msg("Unexpected data tables")
 		state.wlanState = "ERROR: 未预期的数据表格式"
 		return &state
 	}

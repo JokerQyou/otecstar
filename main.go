@@ -36,9 +36,9 @@ func onReady() {
 	}
 
 	_ = NewOTECStarApp(&config)
-	logger.Debug().Msg("Ready")
+	logger.Info().Msg("Ready")
 }
 
 func onExit() {
-	logger.Debug().Msg("Quit")
+	logger.Info().Msg("Quit")
 }
