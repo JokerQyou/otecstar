@@ -188,6 +188,28 @@ func (o *OTECStarApp) getState() *State {
 	return &state
 }
 
+func (o *OTECStarApp) renderState(state *State) {
+	o.wlanState.SetTitle("宽带: " + state.wlanState)
+	if state.wlanState == `连接上` {
+		o.wlanState.Check()
+	} else {
+		o.wlanState.Uncheck()
+	}
+
+	o.linkState.SetTitle("链路: " + state.linkState)
+	if state.linkState == `连接上` {
+		o.linkState.Check()
+	} else {
+		o.linkState.Uncheck()
+	}
+	o.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
+	o.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
+	o.upSNR.SetTitle("上行信噪比: " + state.upSNR + " dB")
+	o.downWidth.SetTitle("下行速率: " + state.downWidth + " Mbps")
+	o.downSNR.SetTitle("下行信噪比: " + state.downSNR + " dB")
+
+}
+
 func getText(node *html.Node) (t string) {
 	if node.Type == html.TextNode {
 		t = node.Data
@@ -267,24 +289,7 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 				if !ok { // Closed?
 					return
 				}
-				app.wlanState.SetTitle("宽带: " + state.wlanState)
-				if state.wlanState == `连接上` {
-					app.wlanState.Check()
-				} else {
-					app.wlanState.Uncheck()
-				}
-
-				app.linkState.SetTitle("链路: " + state.linkState)
-				if state.linkState == `连接上` {
-					app.linkState.Check()
-				} else {
-					app.linkState.Uncheck()
-				}
-				app.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
-				app.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
-				app.upSNR.SetTitle("上行信噪比: " + state.upSNR + " dB")
-				app.downWidth.SetTitle("下行速率: " + state.downWidth + " Mbps")
-				app.downSNR.SetTitle("下行信噪比: " + state.downSNR + " dB")
+				app.renderState(state)
 			}
 		}
 	}()
