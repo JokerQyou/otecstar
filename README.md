@@ -4,7 +4,7 @@ Simple network status monitor for OTECStar devices.
 
 # What
 
-Some ISPs install OTECStar devices for users to access their internet service. However, either their service sucks, or these devices sucks, the Internet connection is not stable (sometimes not usable at all), so I need a simple way to know whether I'm currently connected or not.
+Some ISPs install OTECStar devices for users to access their internet service. However, either their service sucks, or these devices suck, the Internet connection is not stable (sometimes not usable at all), so I need a simple way to know whether I'm currently connected or not.
 
 # How
 
