@@ -5,7 +5,6 @@ import (
 	"github.com/rs/zerolog"
 	zlog "github.com/rs/zerolog/log"
 	"os"
-	"otecstar/icons"
 	"time"
 )
 
@@ -35,9 +34,6 @@ func onReady() {
 	} else {
 		zerolog.SetGlobalLevel(lvl)
 	}
-
-	systray.SetIcon(icons.OK)
-	systray.SetTooltip("OTECStar network status")
 
 	_ = NewOTECStarApp(&config)
 	logger.Debug().Msg("Ready")

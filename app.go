@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"net/http/cookiejar"
 	"net/url"
+	"otecstar/icons"
 	"strings"
 	"time"
 )
@@ -191,16 +192,28 @@ func (o *OTECStarApp) getState() *State {
 func (o *OTECStarApp) renderState(state *State) {
 	o.wlanState.SetTitle("宽带: " + state.wlanState)
 	if state.wlanState == `连接上` {
-		o.wlanState.Check()
+		if !o.wlanState.Checked() {
+			o.wlanState.Checked()
+			systray.SetIcon(icons.OK)
+		}
 	} else {
-		o.wlanState.Uncheck()
+		if o.wlanState.Checked() {
+			o.wlanState.Uncheck()
+			systray.SetIcon(icons.ERROR)
+		}
 	}
 
 	o.linkState.SetTitle("链路: " + state.linkState)
 	if state.linkState == `连接上` {
-		o.linkState.Check()
+		if !o.linkState.Checked() {
+			o.linkState.Check()
+			systray.SetIcon(icons.OK)
+		}
 	} else {
-		o.linkState.Uncheck()
+		if o.linkState.Checked() {
+			o.linkState.Uncheck()
+			systray.SetIcon(icons.ERROR)
+		}
 	}
 	o.linkLoss.SetTitle("链路衰减: " + state.linkLoss + " dB")
 	o.upWidth.SetTitle("上行速率: " + state.upWidth + " Mbps")
@@ -224,6 +237,9 @@ func getText(node *html.Node) (t string) {
 
 // NewOTECStarApp constructs a new OTECStarApp instance that is ready to run
 func NewOTECStarApp(config *Config) *OTECStarApp {
+	systray.SetIcon(icons.OK)
+	systray.SetTooltip("OTECStar network status")
+
 	app := OTECStarApp{
 		wlanState: systray.AddMenuItem("宽带: -", ""),
 		linkState: systray.AddMenuItem("链路: -", ""),
@@ -254,7 +270,7 @@ func NewOTECStarApp(config *Config) *OTECStarApp {
 		config.Interval = time.Second
 	}
 	ticker := time.NewTicker(config.Interval)
-	app.Clicked(systray.AddMenuItem("Quit", "Quit"), func() {
+	app.Clicked(systray.AddMenuItem("Quit", ""), func() {
 		ticker.Stop()
 		close(app.stopCh)
 		close(app.updateCh)
