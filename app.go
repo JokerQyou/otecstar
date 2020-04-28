@@ -186,8 +186,8 @@ func (o *OTECStarApp) getState() *State {
 			state.linkState = getText(linkTable.Get(0))
 			state.linkLoss = getText(linkTable.Get(1))
 			state.upWidth = getText(linkTable.Get(2))
-			state.upSNR = getText(linkTable.Get(3))
-			state.downWidth = getText(linkTable.Get(4))
+			state.downWidth = getText(linkTable.Get(3))
+			state.upSNR = getText(linkTable.Get(4))
 			state.downSNR = getText(linkTable.Get(5))
 		}
 	})
