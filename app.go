@@ -225,19 +225,20 @@ func NewOTECStarApp(config *AuthConfig) *OTECStarApp {
 	systray.AddMenuItem(VERSION, "").Disable()
 	systray.AddSeparator()
 
+	ticker := time.NewTicker(time.Second)
 	app.Clicked(systray.AddMenuItem("Quit", "Quit"), func() {
+		defer ticker.Stop()
 		close(app.stopCh)
 		systray.Quit()
 	})
 
-	tick := time.Tick(time.Second)
 	// This goroutine triggers state capturing at an interval, the captured state is then sent through `updateCh`
 	go func() {
 		for {
 			select {
 			case <-app.stopCh:
 				return
-			case <-tick:
+			case <-ticker.C:
 				app.updateCh <- app.getState()
 			}
 		}
