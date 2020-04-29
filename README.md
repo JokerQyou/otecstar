@@ -10,15 +10,13 @@ Some ISPs install OTECStar devices for users to access their internet service. H
 
 ## To build
 
-```shell script
-go build
-```
-
-On Windows, you'll need to add some flags:
+You'll need to install the [mage](https://github.com/magefile/mage) build tool. Either grab from their Git repository, or download one of the prebuilt binaries from their release page.
 
 ```shell script
-go build -ldflags "-H=windowsgui"
+mage build
 ```
+
+If you are on macOS, this will build for both macOS and Windows, resulting in `otecstar.app` for macOS and `OTECStar.exe` for Windows.
 
 ## To config
 
@@ -26,13 +24,16 @@ go build -ldflags "-H=windowsgui"
 cp config_sample.ini config.ini
 ```
 
-And edit `config.ini`, replace router IP, username and password.
+And edit `config.ini`, replace router IP, username, password and your desired refresh interval.
+
+And then move the `config.ini` to:
+
+- `~/.config/otecstar/config.ini` on macOS
+- `%USERPROFILE%\otecstar\config.ini` on Windows
 
 ## To run
 
-```shell script
-./otecstar
-```
+Well, you just double click on the built bundle.
 
 ## How does it look like?
 
