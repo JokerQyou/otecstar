@@ -10,10 +10,8 @@ Some ISPs install OTECStar devices for users to access their internet service. H
 
 ## To build
 
-You'll need to install the [mage](https://github.com/magefile/mage) build tool. Either grab from their Git repository, or download one of the prebuilt binaries from their release page.
-
 ```shell script
-mage build
+go run build.go build
 ```
 
 If you are on macOS, this will build for both macOS and Windows, resulting in `otecstar.app` for macOS and `OTECStar.exe` for Windows.
