@@ -21,6 +21,8 @@ type target struct {
 }
 
 func buildForTarget(t target) (output string, err error) {
+	os.RemoveAll(`rsrc.syso`)
+
 	env := map[string]string{}
 	if t.goos != "" && t.goarch != "" {
 		env["GOOS"] = t.goos
@@ -98,4 +100,5 @@ func Clean() {
 	os.RemoveAll("otecstar")
 	os.RemoveAll("otecstar.exe")
 	os.RemoveAll(`otecstar.app`)
+	os.RemoveAll(`rsrc.syso`)
 }
