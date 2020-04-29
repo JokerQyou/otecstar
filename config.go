@@ -6,6 +6,8 @@ This module contains configuration related types and logic.
 import (
 	"fmt"
 	"gopkg.in/ini.v1"
+	"os"
+	"path/filepath"
 	"time"
 )
 
@@ -21,7 +23,11 @@ type AuthConfig struct {
 }
 
 func LoadConfig() (c Config, err error) {
-	if err = ini.MapTo(&c, "./config.ini"); err != nil {
+	var userHomeDir string
+	if userHomeDir, err = os.UserHomeDir(); err != nil {
+		return
+	}
+	if err = ini.MapTo(&c, filepath.Join(userHomeDir, `.config`, `otecstar`, `config.ini`)); err != nil {
 		return
 	}
 	if c.AuthConfig == nil {
