@@ -233,6 +233,14 @@ func (o *OTECStarApp) renderState(state *State) {
 	}
 
 	o.setIcon(icon)
+
+	if icon == "ok" {
+		systray.SetTooltip("OTECStar: network OK")
+	} else if icon == "warn" {
+		systray.SetTooltip("OTECStar: network unstable")
+	} else if icon == "error" {
+		systray.SetTooltip("OTECStar: network disconnected")
+	}
 }
 
 func (o *OTECStarApp) setIcon(icon string) {
