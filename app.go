@@ -241,11 +241,11 @@ func (o *OTECStarApp) setIcon(icon string) {
 	}
 
 	if icon == "ok" {
-		systray.SetIcon(icons.OK)
+		systray.SetTemplateIcon(icons.OK_TPL, icons.OK)
 	} else if icon == "warn" {
-		systray.SetIcon(icons.WARN)
+		systray.SetTemplateIcon(icons.WARN_TPL, icons.WARN)
 	} else if icon == "error" {
-		systray.SetIcon(icons.ERROR)
+		systray.SetTemplateIcon(icons.ERROR_TPL, icons.ERROR)
 	} else {
 		return
 	}
